@@ -115,45 +115,36 @@ def run_refine(queries: list[QueryRecord]) -> dict[str, dict[str, RefineCluster]
 
 
 def flag_clusters(
+    sweep_clusters: dict[str, SweepCluster],
     refine_clusters: dict[str, dict[str, RefineCluster]],
     min_templates: int = 3,
 ) -> list[RefineCluster]:
     """
-    Flags refine sub-clusters that meet the threshold for operator review.
-    Default threshold is 3 distinct query templates sharing the same
-    sweep and refine fingerprint.
-
-    Returns a flat list of flagged clusters sorted by total_credits desc
-    so the operator sees the highest-cost candidates first.
+    Flags sweep clusters where the number of distinct refine
+    sub-clusters meets the threshold. Each distinct refine cluster
+    represents an independently written query pattern doing redundant
+    computation against the same join topology.
     """
     flagged = []
 
     for sweep_hash, refine_map in refine_clusters.items():
-        for refine_hash, cluster in refine_map.items():
-            if cluster.template_count >= min_templates:
+        distinct_refine_count = len(refine_map)
+
+        if distinct_refine_count >= min_templates:
+            for cluster in refine_map.values():
                 cluster.flagged = True
                 flagged.append(cluster)
 
     return sorted(flagged, key=lambda c: c.total_credits, reverse=True)
 
-
 def run_clustering(
     queries: list[QueryRecord],
     min_templates: int = 3,
 ) -> tuple[dict[str, SweepCluster], list[RefineCluster]]:
-    """
-    Full clustering pipeline. Runs sweep, refine, and flagging
-    in a single call. Returns the sweep clusters and the flagged
-    refine sub-clusters.
-
-    This is the main entry point for the capture job to call
-    after fingerprinting a batch of queries.
-    """
     sweep_clusters = run_sweep(queries)
     refine_clusters = run_refine(queries)
-    flagged = flag_clusters(refine_clusters, min_templates=min_templates)
+    flagged = flag_clusters(sweep_clusters, refine_clusters, min_templates=min_templates)
 
-    # roll up template counts to sweep clusters
     for sweep_hash, refine_map in refine_clusters.items():
         all_templates = set()
         for cluster in refine_map.values():
