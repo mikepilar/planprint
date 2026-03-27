@@ -55,6 +55,11 @@ job, and operator review interface are in progress.
 - [ ] LLM explanation layer
 - [ ] Databricks support
 
+## Setup
+
+Run `sql/setup.sql` against your Snowflake account before running the capture job.
+Requires a role with access to `SNOWFLAKE.ACCOUNT_USAGE`.
+
 ## License
 
 MIT
