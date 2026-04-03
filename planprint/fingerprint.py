@@ -1,3 +1,15 @@
+# -----------------------------------------------------------------------------
+# planprint
+# cluster.py
+#
+# Author:      Mike Pilar
+# Created:     2026-04-03
+# Description: SQL normalization and fingerprint generation. Implements 
+#              the sweep pass (join topology hashing) and refine pass 
+#              (aggregation and window function signature hashing) using 
+#              sqlglot for AST-based parsing.
+# -----------------------------------------------------------------------------
+
 import sqlglot
 import sqlglot.expressions as exp
 import hashlib
