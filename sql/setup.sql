@@ -1,3 +1,14 @@
+-- -----------------------------------------------------------------------------
+-- planprint
+-- setup.sql
+--
+-- Author:      Mike Pilar
+-- Created:     2026-04-03
+-- Description: Creates the planprint database, schema, and query_fingerprints
+--              persistence table. Run once against your Snowflake account
+--              before executing the capture pipeline.
+-- -----------------------------------------------------------------------------
+
 CREATE DATABASE IF NOT EXISTS planprint;
 CREATE SCHEMA IF NOT EXISTS planprint.public;
 
