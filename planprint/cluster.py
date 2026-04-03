@@ -4,10 +4,10 @@
 #
 # Author:      Mike Pilar
 # Created:     2026-04-03
-# Description: SQL normalization and fingerprint generation. Implements 
-#              the sweep pass (join topology hashing) and refine pass 
-#              (aggregation and window function signature hashing) using 
-#              sqlglot for AST-based parsing.
+# Description: Sweep and refine clustering logic. Groups fingerprinted 
+#              queries by structural similarity, sub-clusters by computation 
+#              pattern, and flags candidates that meet the threshold for 
+#              operator review.
 # -----------------------------------------------------------------------------
                                                                                                                                                                                  
 from collections import defaultdict
