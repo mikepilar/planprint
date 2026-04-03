@@ -4,10 +4,10 @@
 #
 # Author:      Mike Pilar
 # Created:     2026-04-03
-# Description: SQL normalization and fingerprint generation. Implements 
-#              the sweep pass (join topology hashing) and refine pass 
-#              (aggregation and window function signature hashing) using 
-#              sqlglot for AST-based parsing.
+# Description: Snowflake query history capture and persistence. Fetches 
+#              recent queries from ACCOUNT_USAGE, calls 
+#              GET_QUERY_OPERATOR_STATS for plan data, and writes fingerprinted 
+#              records to planprint.public.query_fingerprints.
 # -----------------------------------------------------------------------------
 
 import json
